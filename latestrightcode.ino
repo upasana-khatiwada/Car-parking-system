@@ -9,7 +9,9 @@ LiquidCrystal mylcd(rs, en, d4, d5, d6, d7);
 
 int s1=0,s2=0,s3=0,s4=0;
 int slot=4;
+int a=0,b=0,c=0,d=0;
 
+bool parkingFull = false;
  
 
 void setup() {
@@ -51,60 +53,105 @@ void loop() {
 
   // mylcd.setCursor(10,1);
   // mylcd.print(slot);
+   if (parkingFull) {
+     // parkingFull = false; // parking lot is not full anymore
+      myservo1.write(0); // toll up down
+    }
 
 
   
 mylcd.setCursor (0,0);
-// mylcd.clear();
-if(s1==0){mylcd.print("1:Fill ");}
-     else{mylcd.print("1:Empty");}
-
-mylcd.setCursor (8,0);
-if(s2==0){mylcd.print("2:Fill ");}
-     else{mylcd.print("2:Empty");}
-
-mylcd.setCursor (0,1);
-if(s3==0){mylcd.print("3:Fill ");}
-     else{mylcd.print("3:Empty");}
-
-mylcd.setCursor (8,1);
-if(s4==0){mylcd.print("4:Fill ");}
-     else{mylcd.print("4:Empty");}
-
-
-
-  if(digitalRead(12))
-  {
-    
-    
+ if(s1==1||s2==1||s3==1||s4==1)
+ {
      
+// mylcd.clear();
+      if(s1==1)
+      {
+        mylcd.print("1:Fill ");
+        a1=1;
+      }
+     else{
+       mylcd.print("1:Empty");
+       a1=0;
+      }
+
+      mylcd.setCursor (8,0);
+      if(s2==1){
+        mylcd.print("2:Fill ");
+        a2=1;
+      }
+     else{
+       mylcd.print("2:Empty");
+       a2=0;
+
+       }
+
+      mylcd.setCursor (0,1);
+      if(s3==1){
+        a3=1;
+        mylcd.print("3:Fill ");
+        }
+     else{
+       a3=0;
+       mylcd.print("3:Empty");
+       }
+
+      mylcd.setCursor (8,1);
+
+      if(s4==1)
+      {
+        mylcd.print("4:Fill ");
+        a4=1;
+      }
+     else{
+       mylcd.print("4:Empty");
+       a4=0;
+       }
+     
+     
+
+  }else {
+    // if (!parkingFull) {
+    //   parkingFull = true; // parking lot is full again
+      myservo1.write(90); // toll down
+ }
+
+    
+     mylcd.clear();
+ 
+       mylcd.setCursor(0, 0);
+      mylcd.print("Sorry");
+      mylcd.setCursor(0, 1);
+      mylcd.print("parking Full"); 
+// myservo1.write(0); 
+
+  delay(600);
+
+  }
+
+    
+  if(digitalRead(12))
+
+  {
+
+    
+    // if(s1==0&&s2==0&&s3==0&&s4==0)
+    // {
+    //   myservo1.write(0);
+    // }
      myservo1.write(90);//toll up
     //  delay(1500);
       
   }
- 
 else{
   myservo1.write(0);
 
   delay(2000);
-
-
-
     
 }
 
-
-
-
   
-Read_sensor();
-  
-  
- 
-
-
-//for car exit--------------
-
+ //Read_sensor();
 
   
   // put your main code here, to run repeatedly:
@@ -121,18 +168,37 @@ void Read_sensor()
   if(digitalRead(2))
   {
     s1 = 1;
+    // a=1;
+  }
+  else{
+      s1=0;    
   }
   if(digitalRead(3))
   {
     s2 = 1;
+    // b=1;
+  }else{
+    s2=0;
   }
+  
   if(digitalRead(4))
   {
     s3 = 1;
+    // c=1;
+  }else{
+    s3=0;
   }
   if(digitalRead(5))
   {
     s4 = 1;
+    // d=1;
   }
+  else{
+    s4 =0;
+  }
+
+   
+
+  
 }
 
